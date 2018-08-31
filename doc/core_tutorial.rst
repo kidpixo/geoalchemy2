@@ -103,7 +103,7 @@ can be used::
     view the data we can get a compiled form of the expression, and ask
     for its ``params``::
 
-        >>> ins.compile.params()
+        >>> ins.compile().params()
         {'geom': 'POLYGON((0 0,1 0,1 1,0 1,0 0))', 'name': 'Majeur'}
 
 Up to now we've created an ``INSERT`` query but we haven't sent this query to
@@ -170,7 +170,7 @@ We can now execute the statement and look at the results::
 
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print 'name:', row['name'], '; geom:', row['geom'].desc
+    ...     print('name:', row['name'], '; geom:', row['geom'].desc)
     ...
     name: Majeur ; geom: 0103...
     name: Garde ; geom: 0103...
@@ -204,7 +204,7 @@ we can use this::
     SELECT lake.id, lake.name, ST_AsEWKB(lake.geom) AS geom FROM lake WHERE ST_Contains(lake.geom, :param_1)
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print 'name:', row['name'], '; geom:', row['geom'].desc
+    ...     print('name:', row['name'], '; geom:', row['geom'].desc)
     ...
     name: Orta ; geom: 0103...
 
@@ -224,7 +224,7 @@ Here's another spatial query, based on ``ST_Intersects``::
     ...            lake_table.c.geom.ST_Intersects('LINESTRING(2 1,4 1)'))
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print 'name:', row['name'], '; geom:', row['geom'].desc
+    ...     print('name:', row['name'], '; geom:', row['geom'].desc)
     ...
     name: Garde ; geom: 0103...
     name: Orta ; geom: 0103...
@@ -243,7 +243,7 @@ whether the bounding boxes of geometries intersect. GeoAlchemy provides the
     ...            lake_table.c.geom.intersects('LINESTRING(2 1,4 1)'))
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print 'name:', row['name'], '; geom:', row['geom'].desc
+    ...     print('name:', row['name'], '; geom:', row['geom'].desc)
     ...
     name: Garde ; geom: 0103...
     name: Orta ; geom: 0103...
@@ -260,7 +260,7 @@ Here's a ``Select`` that calculates the areas of buffers for our lakes::
     SELECT lake.name, ST_Area(ST_Buffer(lake.geom, %(param_1)s)) AS bufferarea FROM lake
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print '%s: %f' % (row['name'], row['bufferarea'])
+    ...     print('%s: %f' % (row['name'], row['bufferarea']))
     Majeur: 21.485781
     Garde: 32.485781
     Orta: 45.485781
@@ -274,7 +274,7 @@ clauses. For example::
     SELECT lake.name FROM lake WHERE ST_Area(ST_Buffer(lake.geom, :param_1)) > :ST_Area_1
     >>> result = conn.execute(s)
     >>> for row in result:
-    ...     print row['name']
+    ...     print(row['name'])
     Orta
 
 And, like any other functions supported by GeoAlchemy, processing and
@@ -285,7 +285,7 @@ measurement functions can be applied to
     >>> result = conn.execute(s)
     >>> lake = result.fetchone()
     >>> bufferarea = conn.scalar(lake[lake_table.c.geom].ST_Buffer(2).ST_Area())
-    >>> print '%s: %f' % (lake['name'], bufferarea)
+    >>> print('%s: %f' % (lake['name'], bufferarea))
     Majeur: 21.485781
 
 Further Reference
